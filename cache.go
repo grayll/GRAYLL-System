@@ -229,3 +229,13 @@ func BuildHash(uid, algorithm string) (string, string) {
 	hashRoi := fmt.Sprintf("%s_%s_current_ROI", uid, str)
 	return hashRoi, hashCurrentValue
 }
+
+func (cache *RedisCache) SetRefererUid(uid, refererUid string) {
+	cache.client.HSet("referer", uid, refererUid)
+}
+func (cache *RedisCache) GetRefererUid(uid string) (string, error) {
+	return cache.client.HGet("referer", uid).Result()
+}
+func (cache *RedisCache) DelRefererUid(uid string) {
+	cache.client.HDel("referer", uid)
+}
